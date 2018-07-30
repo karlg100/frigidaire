@@ -26,11 +26,20 @@ switch (command) {
     });
     break;
 
+  case 'devices':
+    ac.getDevices(function(err, result) {
+      if (err) return console.error(err);
+      console.log('Got Devices');
+      console.log(util.inspect(result, false, null));
+    });
+    break;
+
+
   // Mode
    case 'getMode':
     ac.getMode(function(err, result) {
       if (err) return console.error(err);
-      console.log(ac);
+      console.log('Mode is '+result);
     });
     break;
 
@@ -167,6 +176,6 @@ switch (command) {
 
   default:
     console.error('Unknown command:', command);
-    console.error('Available commands are: get|telem, getMode, off, cool, econ, fan, getUnit, f|fahrenheit, c|celcius, getClean, clean, rec, getFan, auto, high, med, low, setTemp, getTemp, getRoomTemp');
+    console.error('Available commands are: get|telem, devices, getMode, off, cool, econ, fan, getUnit, f|fahrenheit, c|celcius, getClean, clean, rec, getFan, auto, high, med, low, setTemp, getTemp, getRoomTemp');
     break;
 }
