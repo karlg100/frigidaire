@@ -16,6 +16,14 @@ var arg = process.argv[3];
 switch (command) {
 
   // login, get devices and current telementry
+  case 'devices':
+    ac.getDevices(function(err, result) {
+      if (err) return console.error(err);
+      console.log('Got Devices');
+      console.log(util.inspect(result, false, null));
+    });
+    break;
+
   case 'telem':
   case 'get':
     ac.getTelem(function(err, result) {
@@ -26,11 +34,14 @@ switch (command) {
     });
     break;
 
-  case 'devices':
-    ac.getDevices(function(err, result) {
+  case 'telemUpdate':
+    ac.getTelem(function(err, result) {
       if (err) return console.error(err);
-      console.log('Got Devices');
-      console.log(util.inspect(result, false, null));
+      console.log('Got Telem');
+      ac.getTelemUpdate(ac.applianceId, function(err, update) {
+        console.log(update);
+        console.log(util.inspect(ac, false, null));
+      });
     });
     break;
 
@@ -176,6 +187,6 @@ switch (command) {
 
   default:
     console.error('Unknown command:', command);
-    console.error('Available commands are: get|telem, devices, getMode, off, cool, econ, fan, getUnit, f|fahrenheit, c|celcius, getClean, clean, rec, getFan, auto, high, med, low, setTemp, getTemp, getRoomTemp');
+    console.error('Available commands are: get|telem, telemUpdate, devices, getMode, off, cool, econ, fan, getUnit, f|fahrenheit, c|celcius, getClean, clean, rec, getFan, auto, high, med, low, setTemp, getTemp, getRoomTemp');
     break;
 }
