@@ -45,6 +45,19 @@ switch (command) {
     });
     break;
 
+  case 'testReauth':
+    ac.getTelem(function(err, result) {
+      if (err) return console.error(err);
+      console.log('Got Telem, resetting session');
+      ac.resetAll();
+      ac.getTelem(function(err, update) {
+        if (err) return console.error(err);
+        console.log(update);
+        console.log(util.inspect(ac, false, null));
+      });
+    });
+    break;
+
 
   // Mode
    case 'getMode':
@@ -187,6 +200,6 @@ switch (command) {
 
   default:
     console.error('Unknown command:', command);
-    console.error('Available commands are: get|telem, telemUpdate, devices, getMode, off, cool, econ, fan, getUnit, f|fahrenheit, c|celcius, getClean, clean, rec, getFan, auto, high, med, low, setTemp, getTemp, getRoomTemp');
+    console.error('Available commands are: get|telem, telemUpdate, testReauth, devices, getMode, off, cool, econ, fan, getUnit, f|fahrenheit, c|celcius, getClean, clean, rec, getFan, auto, high, med, low, setTemp, getTemp, getRoomTemp');
     break;
 }
