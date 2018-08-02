@@ -7,6 +7,7 @@ This is a quick and dirty IBM WorkLight client to talk to the Frigidaire cloud s
 * setting attributes values works!
 * getting attribute values works!
 * function library complete for homebridge plugin support!
+* telemetry updates now fetched and merged into the telem data
 
 # Todo
 * figure out how the X-WL-ClientId is generated.  it appears to be a sha1sum of something, not sure what.  
@@ -15,6 +16,4 @@ This is a quick and dirty IBM WorkLight client to talk to the Frigidaire cloud s
   * probably some conbination of the app version and device string
   * needs to match their database of expected device string, or will fail auth chain
 * Telementry updates
-  * 'build out a way to receive updated telementry and cache it locally' (this seems important!  they banned my IP for whatever reason.  it may have been because updates were sent to quickly without telem retrieved.  who knows what this does to the IBM side app.  need to impliment this before further testing!)
   * add a timer to recieve updated telementry (try to keep the timing to the observed behavor in the real client.  seems to be every 2-4 seconds.  however, maybe we need less if homekit is not focued?  this may be done on the homebridge plugin side)
-  * **this seems important!  they banned my IP for whatever reason.  it may have been because updates were sent to quickly without telem retrieved.  who knows what this does to the IBM side app.  need to impliment this before further testing!**
