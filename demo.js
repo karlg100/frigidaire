@@ -61,9 +61,20 @@ switch (command) {
 
   // Mode
    case 'getMode':
-    ac.getMode(function(err, result) {
-      if (err) return console.error(err);
-      console.log('Mode is '+result);
+    ac.getTelem(function(err, result) {
+      ac.getMode(function(err, result) {
+        if (err) return console.error(err);
+        console.log('Mode is '+result);
+      });
+    });
+    break;
+
+   case 'getCoolingState':
+    ac.getTelem(function(err, result) {
+      ac.getCoolingState(function(err, result) {
+        if (err) return console.error(err);
+        console.log('Mode is '+result);
+      });
     });
     break;
 
@@ -97,9 +108,11 @@ switch (command) {
 
   // Units
    case 'getUnit':
-    ac.getUnit(function(err, result) {
-      if (err) return console.error(err);
-      console.log('Mode is '+result);
+    ac.getTelem(function(err, result) {
+      ac.getUnit(function(err, result) {
+        if (err) return console.error(err);
+        console.log('Mode is '+result);
+      });
     });
     break;
 
@@ -121,9 +134,11 @@ switch (command) {
 
   // Clean Air
    case 'getClean':
-    ac.getCleanAir(function(err, result) {
-      if (err) return console.error(err);
-      console.log('Clean air is '+result);
+    ac.getTelem(function(err, result) {
+      ac.getCleanAir(function(err, result) {
+        if (err) return console.error(err);
+        console.log('Clean air is '+result);
+      });
     });
     break;
 
@@ -143,9 +158,11 @@ switch (command) {
 
   // Fan Mode
   case 'getFan':
-    ac.getFanMode(function(err, result) {
-      if (err) return console.error(err);
-      console.log('current fan mode is '+result);
+    ac.getTelem(function(err, result) {
+      ac.getFanMode(function(err, result) {
+        if (err) return console.error(err);
+        console.log('current fan mode is '+result);
+      });
     });
     break;
 
@@ -185,21 +202,25 @@ switch (command) {
     break;
 
   case 'getTemp':
-    ac.getTemp(function(err, result) {
-      if (err) return console.error(err);
-      console.log('current temp is '+result);
+    ac.getTelem(function(err, result) {
+      ac.getTemp(function(err, result) {
+        if (err) return console.error(err);
+        console.log('current temp is '+result);
+      });
     });
     break;
 
   case 'getRoomTemp':
-    ac.getRoomTemp(function(err, result) {
-      if (err) return console.error(err);
-      console.log('current room temp is '+result);
+    ac.getTelem(function(err, result) {
+      ac.getRoomTemp(function(err, result) {
+        if (err) return console.error(err);
+        console.log('current room temp is '+result);
+      });
     });
     break;
 
   default:
     console.error('Unknown command:', command);
-    console.error('Available commands are: get|telem, telemUpdate, testReauth, devices, getMode, off, cool, econ, fan, getUnit, f|fahrenheit, c|celcius, getClean, clean, rec, getFan, auto, high, med, low, setTemp, getTemp, getRoomTemp');
+    console.error('Available commands are: get|telem, telemUpdate, testReauth, devices, getMode, getCoolingState, off, cool, econ, fan, getUnit, f|fahrenheit, c|celcius, getClean, clean, rec, getFan, auto, high, med, low, setTemp, getTemp, getRoomTemp');
     break;
 }

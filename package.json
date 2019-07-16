@@ -1,6 +1,6 @@
 {
   "name": "frigidaire",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Frigidaire Appliance Node.js Module",
   "main": "lib/frigidaire.js",
   "scripts": {
@@ -28,9 +28,5 @@
     "randomstring": "^1.1.5",
     "request": "^2.79.0",
     "xtend": "^4.0.1"
-  },
-  "readme": "ERROR: No README data found!",
-  "_id": "frigidaire@1.0.3",
-  "_shasum": "7b9b3ab19b8f0d922dc0bf27623e0cc2d77583eb",
-  "_from": "."
+  }
 }
