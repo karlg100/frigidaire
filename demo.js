@@ -1,12 +1,12 @@
-var Frigidaire = require('frigidaire');
+var Frigidaire = require('./lib/frigidaire.js')
 var util = require('util');
 
 console.log('starting up');
 var ac = new Frigidaire({
-  //applianceId: 4567,  // uncomment and specify the specific ApplianceId from telem
-  //deviceIndex: 0,     // uncomment to specify the device by the order it is returned (starting with 0 as the first device)
-  username: 'foo@bar.net',
-  password: 'foobar',
+  username: 'john@example.com',
+  password: 'frigidaire1492915@!',
+  applianceSerial: '71826036',
+  deviceId: 'O2-w8yjkjotjQj9J_AolEaeSZZlmTQ501ahP'
 });
 
 var command = process.argv[2];
@@ -29,8 +29,8 @@ switch (command) {
     ac.getTelem(function(err, result) {
       if (err) return console.error(err);
       console.log('Got Telem');
-      console.log(result);
-      console.log(util.inspect(ac, false, null));
+      console.log(util.inspect(result,false,null));
+      //console.log(util.inspect(ac, false, null));
     });
     break;
 
@@ -205,7 +205,7 @@ switch (command) {
     ac.getTelem(function(err, result) {
       ac.getTemp(function(err, result) {
         if (err) return console.error(err);
-        console.log('current temp is '+result);
+        console.log('current setpoint temp is '+result);
       });
     });
     break;
@@ -214,7 +214,7 @@ switch (command) {
     ac.getTelem(function(err, result) {
       ac.getRoomTemp(function(err, result) {
         if (err) return console.error(err);
-        console.log('current room temp is '+result);
+        console.log('current actual room temp is '+result);
       });
     });
     break;
