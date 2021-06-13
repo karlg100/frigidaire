@@ -1,6 +1,6 @@
 {
   "name": "frigidaire",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Frigidaire Appliance Node.js Module",
   "main": "lib/frigidaire.js",
   "scripts": {
