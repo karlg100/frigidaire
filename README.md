@@ -1,19 +1,18 @@
 # Frigidaire Cloud Node.js Module
 
-# Update 5-30-2021
+# Update 6-13-2021
 Frigidaire updated their app which broke the original version of this plugin. The plugin now has been updated to work with this new app from Frigidaire!
 
-This is a quick and dirty IBM WorkLight client to talk to the Frigidaire cloud services for C&C of Frigidiare Wifi enabled devices.  Ultimate goal is to integreate with HomeKit for Siri and better UI/UX expereince!  (the Frigidare App is terrible)
+This is a quick and dirty client to talk to the Frigidaire cloud services for C&C of Frigidiare Wifi enabled devices.  Ultimate goal is to integreate with HomeKit for Siri and better UI/UX expereince!  (the Frigidare App is terrible)
 
 # Done
-* Auth is working!
+* Auth retooled, again
 * setting attributes values works!
 * getting attribute values works!
 * function library complete for homebridge plugin support!
 * telemetry updates now fetched and merged into the telem data
 
 # Todo
-* figure out how the X-WL-ClientId is generated.  it appears to be a sha1sum of something, not sure what.  
   * tested with another device, it seems to definately be dependant upon the device type
   * not based on iOS version
   * probably some conbination of the app version and device string
