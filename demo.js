@@ -10,21 +10,87 @@ var ac = new Frigidaire({
   //deviceId: 'O2-w8yjkjotjQj9J_AolEaeSZZlmTQ501ahP'
 });
 
+// time to wait for module init to complete
+var callbackTime = 4000;
+
 var applainceSerial = null;
 var an = 2;
-if (process.argv.length > 3) {
+if (process.argv[2] != 'setTemp' && process.argv.length > 3) {
   var applianceSerial = process.argv[an];
   ++an;
 }
 var command = process.argv[an]; ++an;
 var arg = process.argv[an];
 
-//console.log(ac);
+// define what to do for each command
+var cmdMap = {};
+cmdMap["getTelem"] = 'getTelem';
+cmdMap["getMode"] = 'getMode';
+cmdMap["getCoolingState"] = 'getCoolingState';
+cmdMap["getUnit"] = 'getUnit';
+cmdMap["getCleanAir"] = 'getCleanAir';
+cmdMap["getFanMode"] = 'getFanMode';
+cmdMap["getTemp"] = 'getTemp';
+cmdMap["getRoomTemp"] = 'getRoomTemp';
+
+cmdMap["off"] = 'mode';
+cmdMap["cool"] = 'mode';
+cmdMap["econ"] = 'mode';
+cmdMap["fan"] = 'mode';
+cmdMap["f"] = 'changeUnits';
+cmdMap["fahrenheit"] = 'changeUnits';
+cmdMap["c"] = 'changeUnits';
+cmdMap["celsius"] = 'changeUnits';
+cmdMap["cleanAirOn"] = 'cleanAir';
+cmdMap["cleanAirOff"] = 'cleanAir';
+cmdMap["fanAuto"] = 'fanMode';
+cmdMap["fanHigh"] = 'fanMode';
+cmdMap["fanMed"] = 'fanMode';
+cmdMap["fanLow"] = 'fanMode';
+cmdMap["setTemp"] = 'setTemp';
+
+var cmdArg = {};
+cmdArg["off"] = ac.MODE_OFF;
+cmdArg["cool"] = ac.MODE_COOL;
+cmdArg["econ"] = ac.MODE_ECON;
+cmdArg["fan"] = ac.MODE_FAN;
+cmdArg["f"] = ac.FAHRENHEIT
+cmdArg["fahrenheit"] = ac.FAHRENHEIT;
+cmdArg["c"] = ac.CELSIUS;
+cmdArg["celsius"] = ac.CELSIUS;
+cmdArg["cleanAirOn"] = ac.CLEANAIR_ON;
+cmdArg["cleanAirOff"] = ac.CLEANAIR_OFF;
+cmdArg["fanAuto"] = ac.FANMODE_AUTO;
+cmdArg["fanHigh"] = ac.FANMODE_HIGH;
+cmdArg["fanMed"] = ac.FANMODE_MED;
+cmdArg["fanLow"] = ac.FANMODE_LOW;
+cmdArg["setTemp"] = arg;
+
+function schCall(ac, func, applianceSerial, arg = null) {
+    if (arg !== null) {
+      console.log("Running " + func + " with arg " + arg);
+      ac[func](applianceSerial, arg, function(err, result) {
+        if (err) return console.error(err);
+        console.log('Changed ' + func + " to " + arg + " : " + util.inspect(result,false,null));
+        //console.log(util.inspect(result,false,null));
+        //console.log(util.inspect(ac, false, null));
+      });
+    } else {
+      console.log("Getting " + func);
+      ac[func](applianceSerial, function(err, result) {
+        if (err) return console.error(err);
+        console.log('Result ' + func + " : " + util.inspect(result,false,null));
+        //console.log(util.inspect(result,false,null));
+        //console.log(util.inspect(ac, false, null));
+      });
+    }
+}
 
 switch (command) {
 
   // login, get devices and current telementry
   case 'devices':
+    console.log("Getting Devices");
     ac.getDevices(function(err, result) {
         if (err) return console.error(err);
         console.log('Got Devices');
@@ -32,17 +98,43 @@ switch (command) {
     });
     break;
 
-  case 'telem':
-  case 'get':
-    ac.getTelem(applianceSerial, function(err, result) {
-        if (err) return console.error(err);
-        console.log('Got Telem');
-        console.log(util.inspect(result,false,null));
-        //console.log(util.inspect(ac, false, null));
-    });
+  // get telem / attributes
+  case 'getTelem':
+  case 'getMode':
+  case 'getCoolingState':
+  case 'getUnit':
+  case 'getCleanAir':
+  case 'getFanMode':
+  case 'getTemp':
+  case 'getRoomTemp':
+    console.log("Scheduling " + command + " in " + callbackTime + "ms");
+    setTimeout(schCall, callbackTime, ac, command, applianceSerial);
     break;
 
+  // set attributes
+  case 'off':
+  case 'cool':
+  case 'econ':
+  case 'fan':
+  case 'f':
+  case 'fahrenheit':
+  case 'c':
+  case 'celsius':
+  case 'cleanAirOn':
+  case 'cleanAirOoff':
+  case 'fanAuto':
+  case 'fanHigh':
+  case 'fanMed':
+  case 'fanLow':
+  case 'setTemp':
+    console.log("Scheduling " + command + " with " + cmdMap[command] + " with arg " + cmdArg[command] +" in " + callbackTime + "ms");
+    setTimeout(schCall, callbackTime, ac, cmdMap[command], applianceSerial, cmdArg[command]);
+    break;
+
+/*
+  // these are broken for now
   case 'telemUpdate':
+    console.log("Getting telem update");
     ac.getTelem(applianceSerial, function(err, result) {
         if (err) return console.error(err);
         console.log('Got Telem');
@@ -54,6 +146,7 @@ switch (command) {
     break;
 
   case 'testReauth':
+    console.log("Testing telem reauth");
     ac.getTelem(applianceSerial, function(err, result) {
         if (err) return console.error(err);
         console.log('Got Telem, resetting session');
@@ -65,156 +158,10 @@ switch (command) {
         });
     });
     break;
-
-
-  // Mode
-   case 'getMode':
-     ac.getMode(applianceSerial, function(err, result) {
-        if (err) return console.error(err);
-        console.log('Mode is '+result);
-     });
-     break;
-
-   case 'getCoolingState':
-    ac.getCoolingState(applianceSerial, function(err, result) {
-        if (err) return console.error(err);
-        console.log('Mode is '+result);
-    });
-    break;
-
-  case 'off':
-    ac.mode(applianceSerial, ac.MODE_OFF, function(err, result) {
-        if (err) return console.error(err);
-        console.log('Turned off');
-    });
-    break;
-
-  case 'cool':
-    ac.mode(applianceSerial, ac.MODE_COOL, function(err, result) {
-        if (err) return console.error(err);
-        console.log('Changed to cool mode');
-    });
-    break;
-
-  case 'econ':
-    ac.mode(applianceSerial, ac.MODE_ECON, function(err, result) {
-        if (err) return console.error(err);
-        console.log('Changed to econ mode');
-    });
-    break;
-
-  case 'fan':
-    ac.mode(applianceSerial, ac.MODE_FAN, function(err, result) {
-        if (err) return console.error(err);
-        console.log('Changed to fan only mode');
-    });
-    break;
-
-  // Units
-   case 'getUnit':
-    ac.getUnit(applianceSerial, function(err, result) {
-        if (err) return console.error(err);
-        console.log('Unit is '+result);
-    });
-    break;
-
-  case 'f':
-  case 'fahrenheit':
-    ac.changeUnits(applianceSerial, ac.FAHRENHEIT,function(err, result) {
-        if (err) return console.error(err);
-        console.log('Changed to fahrenheit');
-    });
-    break;
-
-  case 'c':
-  case 'celcius':
-    ac.changeUnits(applianceSerial, ac.CELCIUS,function(err, result) {
-        if (err) return console.error(err);
-        console.log('Changed to celcius');
-    });
-    break;
-
-  // Clean Air
-   case 'getClean':
-    ac.getCleanAir(applianceSerial, function(err, result) {
-        if (err) return console.error(err);
-        console.log('Clean air is '+result);
-    });
-    break;
-
-  case 'clean':
-    ac.cleanAir(applianceSerial, ac.CLEANAIR_ON, function(err, result) {
-        if (err) return console.error(err);
-        console.log('Turned on clean air');
-    });
-    break;
-
-  case 'rec':
-    ac.cleanAir(applianceSerial, ac.CLEANAIR_OFF, function(err, result) {
-        if (err) return console.error(err);
-        console.log('Turned off clean air');
-    });
-    break;
-
-  // Fan Mode
-  case 'getFan':
-    ac.getFanMode(applianceSerial, function(err, result) {
-        if (err) return console.error(err);
-        console.log('current fan mode is '+result);
-    });
-    break;
-
- case 'auto':
-    ac.fanMode(applianceSerial, ac.FANMODE_AUTO, function(err, result) {
-        if (err) return console.error(err);
-        console.log('Turned fan to auto');
-    });
-    break;
-
-  case 'high':
-    ac.fanMode(applianceSerial, ac.FANMODE_HIGH, function(err, result) {
-        if (err) return console.error(err);
-        console.log('Turned fan to high');
-    });
-    break;
-
-  case 'med':
-    ac.fanMode(applianceSerial, ac.FANMODE_MED, function(err, result) {
-        if (err) return console.error(err);
-        console.log('Turned fan to medium');
-    });
-    break;
-
-  case 'low':
-    ac.fanMode(applianceSerial, ac.FANMODE_LOW, function(err, result) {
-        if (err) return console.error(err);
-        console.log('Turned fan to low');
-    });
-    break;
-
-  case 'setTemp':
-    ac.setTemp(applianceSerial, arg, function(err, result) {
-        if (err) return console.error(err);
-        console.log('changed temp to '+arg);
-    });
-    break;
-
-  case 'getTemp':
-    ac.getTemp(applianceSerial, function(err, result) {
-        if (err) return console.error(err);
-        console.log('current setpoint temp is '+result);
-    });
-    break;
-
-  case 'getRoomTemp':
-    ac.getRoomTemp(applianceSerial, function(err, result) {
-        if (err) return console.error(err);
-        console.log('current actual room temp is '+result);
-    });
-    break;
+*/
 
   default:
     console.error('Unknown command:', command);
-    console.error('Available commands are: [serialNumber] get|telem, telemUpdate, testReauth, devices, getMode, getCoolingState, off, cool, econ, fan, getUnit, f|fahrenheit, c|celcius, getClean, clean, rec, getFan, auto, high, med, low, setTemp, getTemp, getRoomTemp');
+    console.error('Available commands are: [serialNumber] ' + Object.keys(cmdMap));
     break;
 }
