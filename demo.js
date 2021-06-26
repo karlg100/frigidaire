@@ -31,6 +31,7 @@ cmdMap["getUnit"] = 'getUnit';
 cmdMap["getCleanAir"] = 'getCleanAir';
 cmdMap["getFanMode"] = 'getFanMode';
 cmdMap["getTemp"] = 'getTemp';
+cmdMap["getFilter"] = 'getFilter';
 cmdMap["getRoomTemp"] = 'getRoomTemp';
 
 cmdMap["off"] = 'mode';
@@ -104,6 +105,7 @@ switch (command) {
   case 'getCoolingState':
   case 'getUnit':
   case 'getCleanAir':
+  case 'getFilter':
   case 'getFanMode':
   case 'getTemp':
   case 'getRoomTemp':
