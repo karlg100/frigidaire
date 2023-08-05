@@ -1,6 +1,6 @@
 {
   "name": "frigidaire",
-  "version": "2.1.2",
+  "version": "3.0.0",
   "description": "Frigidaire Appliance Node.js Module",
   "main": "lib/frigidaire.js",
   "scripts": {
@@ -18,6 +18,13 @@
   "author": {
     "name": "Karl Grindley"
   },
+  "contributors": [
+    {
+      "name": "Marek Brzozowski",
+      "email": "marek@jarboe.nyc",
+      "url": "https://github.com/marekbrz/"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/karlg100/frigidiare/issues"

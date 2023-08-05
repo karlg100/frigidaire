@@ -6,9 +6,7 @@ console.log('starting up');
 var ac = new Frigidaire({
   username: 'john@example.com',
   password: 'frigidaire1492915@!',
-  //applianceSerial: '12345678',
-  //deviceId: 'O2-w8yjkjotjQj9J_AolEaeSZZlmTQ501ahP'
-});
+}, true); // Change this to false to use the old V2 API
 
 // time to wait for module init to complete
 var callbackTime = 4000;
